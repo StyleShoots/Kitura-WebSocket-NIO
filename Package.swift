@@ -38,12 +38,23 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "KituraWebSocket",
-            dependencies: ["WebSocketCompression", "KituraNet"]),
+            dependencies: [
+                .product(name: "WebSocketCompression", package: "Kitura-WebSocket-Compression"),
+                .product(name: "KituraNet", package: "Kitura-NIO")
+            ]),
         .target(
             name: "TestWebSocketService",
-            dependencies: ["KituraNet", "KituraWebSocket", "WebSocketCompression"]),
+            dependencies: [
+                .product(name: "KituraNet", package: "Kitura-NIO"),
+                "KituraWebSocket",
+                .product(name: "WebSocketCompression", package: "Kitura-WebSocket-Compression")
+            ]),
         .testTarget(
             name: "KituraWebSocketTests",
-            dependencies: ["Cryptor", "WebSocketCompression", "KituraWebSocket"])
+            dependencies: [
+                .product(name: "BlueCryptor", package: "BlueCryptor"),
+                .product(name: "WebSocketCompression", package: "Kitura-WebSocket-Compression"),
+                "KituraWebSocket"
+            ])
     ]
 )
